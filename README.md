@@ -343,3 +343,271 @@ How to prevent inheriting dark theme from the component
 
 ## Treeshaking
 https://vuetifyjs.com/en/features/treeshaking/
+
+# Styles and animations
+
+## CSS Reset
+https://vuetifyjs.com/en/styles/css-reset/
+
+## Border radius
+https://vuetifyjs.com/en/styles/border-radius/
+
+Basic template: `.rounded-{0 || sm || md || lg || xl || pill || circle}`
+
+Round by side or corner: `.rounded-{t || r || b || l || tl || tr || br || bl}-{0 || sm || md || lg || xl || pill || circle}`
+
+SASS Variables:
+```scss
+$rounded: (
+  0: 0,
+  'sm': $border-radius-root / 2,
+  null: $border-radius-root,
+  'lg': $border-radius-root * 2,
+  'xl': $border-radius-root * 6,
+  'pill': 9999px,
+  'circle': 50%
+);
+
+// How to change
+$rounded: (
+  'sm': $border-radius-root / 3,
+  'lg': $border-radius-root * 2
+);
+```
+
+## Colors
+https://vuetifyjs.com/en/styles/colors/
+
+Each color from the spec gets converted to a background and text variant for styling within your application through a class, e.g. `<div class="red">` or `<span class="red--text">`. These class colors are defined [here](https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/styles/settings/_colors.scss).
+
+Class template for text is `text--{lighten|darken}-{n}`
+```html
+<div class="purple darken-2"> <!-- Background -->
+  <span class="purple--text text--lighten-5">Lorem ipsum</span> <!-- Text -->
+</div>
+```
+
+### How to use optional color pack
+```js
+import colors from 'vuetify/lib/util/colors'
+
+Vue.use(Vuetify)
+
+export default new Vuetify({
+  theme: {
+    themes: {
+      light: {
+        primary: colors.red.darken1, // #E53935
+        secondary: colors.red.lighten4, // #FFCDD2
+        accent: colors.indigo.base, // #3F51B5
+      },
+    },
+  },
+})
+```
+
+[Material Colors Pack](https://vuetifyjs.com/en/styles/colors/#material-colors)
+
+## Content
+
+https://vuetifyjs.com/en/styles/content/
+
+Vuetify has custom styling for multiple standard elements:
+
+```html
+<blockquote></blockquote>
+<p></p>
+<code></code>
+<kbd></kbd>
+<var></var>
+```
+
+## Display helpers
+https://vuetifyjs.com/en/styles/display/
+
+Specify the elements display property. These classes can be applied to all breakpoints from xs to xl. When using a base class,.d-{value}, it is inferred to be .d-${value}-xs.
+
+`.d-{value}` for `xs`
+
+`.d-{breakpoint}-{value}` for `sm`, `md`, `lg` and `xl`
+
+The value property is one of:
+
++ `none`
++ `inline`
++ `inline-block`
++ `block`
++ `table`
++ `table-cell`
++ `table-row`
++ `flex`
++ `inline-flex`
+
+### Examples
++ `.d-flex` — visible on all
++ `.d-flex .d-sm-none` — visible only on xs
++ `.d-none .d-sm-flex .d-md-none` — visible only on sm
+
+### Hide elements
+`.hidden-{breakpoint}-{condition}`
+
+Conditions: `only`, `and-down`, `and-up`
+
+### Display in print
+
+`.d-print-none`, `.d-print-block` etc.
+
+### Accessibility
+Use the `d-sr` utility classes to conditionally hide content on all devices except screen readers.
+
+`.d-sr-only` visually hides elements but will still announce to screen readers.
+
+`.d-sr-only-focusable` visually hides an element until it is focused. This is useful when implementing skip links.
+
+## Elevation
+
+https://vuetifyjs.com/en/styles/elevation/
+
+Sets `z-index` and `box-shadow`. Can be a prop. `elevation-{n}` where `n` is an integer between 0-24
+
+### Dynamic elevation
+
+```html
+<template>
+  <div class="text--primary">
+    <!-- Using the elevation prop -->
+    <v-hover>
+      <template v-slot:default="{ hover }">
+        <v-card
+          :elevation="hover ? 24 : 6"
+          class="mx-auto pa-6"
+        >
+          Prop based elevation
+        </v-card>
+      </template>
+    </v-hover>
+
+    <div class="my-6"></div>
+
+    <!-- Using a dynamic class -->
+    <v-hover>
+      <template v-slot:default="{ hover }">
+        <div
+          :class="`elevation-${hover ? 24 : 6}`"
+          class="mx-auto pa-6 transition-swing"
+        >
+          Class based elevation
+        </div>
+      </template>
+    </v-hover>
+  </div>
+</template>
+```
+
+## Flex
+
+https://vuetifyjs.com/en/styles/flex/
+
+Display: `.d-{breakpoint?}-{flex || inline-flex}`
+
+Flex direction: `.flex-{breakpoint?}-{row || row-reverse || column || column-reverse}`.
+
+Justify: `.justify-{breakpoint?}-{start || end || center || space-between || space-around}`.
+
+Align: `.align-{breakpoint?}-{start || end || center || baseline || stretch}`.
+
+Align-self: `.align-self-{breakpoint?}-{start || end || center || baseline || auto || stretch}`.
+
+Flex wrap: `.flex-{breakpoint?}-{nowrap || wrap || wrap-reverse}`.
+
+Flex order: `.order-{breakpoint?}-{first || 0-12 || last}`.
+
+Align content: `.align-content-{breakpoint?}-{start || end || center || space-between || space-around || stretch}`
+
+Flex grow and shrink: `flex-{breakpoint?}-grow-{0 || 1}`, `flex-{breakpoint?}-shrink-{0 || 1}`
+
+## Float
+
+https://vuetifyjs.com/en/styles/float/
+
+Template: `.float-{breakpoint?}-{left || right || none}`
+
+## Spacing
+
+https://vuetifyjs.com/en/styles/spacing/
+
+Template `{property}{direction}-{breakpoint?}-{size}`
+
+Property: `m` if margin, `p` is padding.
+
+Direction: `t || b || l || r` for one side `s || e` for L || R in LTR/RTL mode, `x || y` for both left/right or top/bottom directions, `a` for all directions.
+
+Size: `0` for 0, `1-16` = number * 4px, `n1-16` = number * (-4px), `auto` for auto.
+
+## Text and typography
+
+https://vuetifyjs.com/en/styles/text-and-typography/
+
+Template: `.text-{breakpoint?}-{h1 || h2 || h3 || h4 || h5 || h6 || subtitle-1 || subtitle-2 || body-1 || body-2 || button || caption || overline}`
+
+Font weight: `.font-weight-{black || bold || medium || regular || light || thin}`
+
+Italic: `.font-italic`
+
+Justify: `.text-{breakpoint?}-{left || center || right}`
+
+Decoration: `.text-decoration-{none || line-through || overline || underline}`
+
+Opacity: `.text--{primary || secondary || disabled}`
+
+Transform: `.text-{lowercase || uppercase || capitalize}`
+
+Wrapping: `.text-no-wrap`, `.text-break`
+
+Ellipsis: `.text-truncate`
+
+RTL: `text-{start || end}`
+
+## Transitions
+
+https://vuetifyjs.com/en/styles/transitions/
+
+API:
+
++ v-fab-transition
++ v-fade-transition
++ v-expand-transition
++ v-scale-transition
++ v-scroll-x-transition
++ v-scroll-x-reverse-transition
++ v-scroll-y-transition
++ v-scroll-y-reverse-transition
++ v-slide-x-transition
++ v-slide-x-reverse-transition
++ v-slide-y-transition
++ v-slide-y-reverse-transition
+
+Example:
+
+```html
+<v-menu transition="fade-transition">
+  <template v-slot:activator="{ on, attrs }">
+    <v-btn
+      dark
+      color="primary"
+      v-bind="attrs"
+      v-on="on"
+    >
+      Fade Transition
+    </v-btn>
+  </template>
+  <v-list>
+    <v-list-item
+      v-for="n in 5"
+      :key="n"
+    >
+      <v-list-item-title v-text="'Item ' + n"></v-list-item-title>
+    </v-list-item>
+  </v-list>
+</v-menu>
+```
